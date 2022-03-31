@@ -6,5 +6,6 @@ public static class RegistesServices
     {
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
+        builder.Services.AddMemoryCache();
     }
 }
