@@ -1,4 +1,5 @@
 ﻿@page "/Profile"
+@attribute [Authorize]
 @inject ISuggestionData suggestionData
 @inject IUserData userData
 @inject NavigationManager navManager
@@ -30,13 +31,13 @@
         </div>
         <p>
             @s.DateCreated.ToString("MM.dd.yyyy")
-        </p>        
+        </p>
         <p>
             Total Votes: @s.UserVotes.Count
-        </p>        
+        </p>
         <p>
             @s.Category.CategoryName
-        </p>        
+        </p>
         <p>
             @s.Description
         </p>
@@ -56,114 +57,114 @@
 @if (archived?.Count > 0)
 {
     <div>
-    <h2>Archived Suggestions</h2>
-    <p>There are your suggestions that are were active but did not gain enough traction.</p>
+        <h2>Archived Suggestions</h2>
+        <p>There are your suggestions that are were active but did not gain enough traction.</p>
 
-    @foreach (var s in archived)
-    {
-        <hr />
-        <div>
-            @s.Suggestion
-        </div>
-        <p>
-            @s.DateCreated.ToString("MM.dd.yyyy")
-        </p>        
-        <p>
-            Total Votes: @s.UserVotes.Count
-        </p>        
-        <p>
-            @s.Category.CategoryName
-        </p>        
-        <p>
-            @s.Description
-        </p>
-        @if (s.SuggestionStatus is not null)
+        @foreach (var s in archived)
         {
+            <hr />
             <div>
-                @s.SuggestionStatus.StatusName
+                @s.Suggestion
             </div>
             <p>
-                @((MarkupString)s.OwnerNotes)
+                @s.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p>
+                Total Votes: @s.UserVotes.Count
+            </p>
+            <p>
+                @s.Category.CategoryName
+            </p>
+            <p>
+                @s.Description
+            </p>
+            @if (s.SuggestionStatus is not null)
+            {
+                <div>
+                    @s.SuggestionStatus.StatusName
+                </div>
+                <p>
+                    @((MarkupString)s.OwnerNotes)
+                </p>
+            }
         }
-    }
-</div>
+    </div>
 }
 
 @if (pending?.Count > 0)
 {
     <div>
-    <h2>Pending Suggestions</h2>
-    <p>There are your suggestions that have not yet been reviewed by the administrators.</p>
+        <h2>Pending Suggestions</h2>
+        <p>There are your suggestions that have not yet been reviewed by the administrators.</p>
 
-    @foreach (var s in pending)
-    {
-        <hr />
-        <div>
-            @s.Suggestion
-        </div>
-        <p>
-            @s.DateCreated.ToString("MM.dd.yyyy")
-        </p>        
-        <p>
-            Total Votes: @s.UserVotes.Count
-        </p>        
-        <p>
-            @s.Category.CategoryName
-        </p>        
-        <p>
-            @s.Description
-        </p>
-        @if (s.SuggestionStatus is not null)
+        @foreach (var s in pending)
         {
+            <hr />
             <div>
-                @s.SuggestionStatus.StatusName
+                @s.Suggestion
             </div>
             <p>
-                @((MarkupString)s.OwnerNotes)
+                @s.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p>
+                Total Votes: @s.UserVotes.Count
+            </p>
+            <p>
+                @s.Category.CategoryName
+            </p>
+            <p>
+                @s.Description
+            </p>
+            @if (s.SuggestionStatus is not null)
+            {
+                <div>
+                    @s.SuggestionStatus.StatusName
+                </div>
+                <p>
+                    @((MarkupString)s.OwnerNotes)
+                </p>
+            }
         }
-    }
 
-</div>
+    </div>
 }
 
 @if (rejected?.Count > 0)
 {
     <div>
-    <h2>Rejected Suggestions</h2>
-    <p>There are your suggestions that were not deemed to be appropriate for the training suggestion site.</p>
+        <h2>Rejected Suggestions</h2>
+        <p>There are your suggestions that were not deemed to be appropriate for the training suggestion site.</p>
 
-    @foreach (var s in rejected)
-    {
-        <hr />
-        <div>
-            @s.Suggestion
-        </div>
-        <p>
-            @s.DateCreated.ToString("MM.dd.yyyy")
-        </p>        
-        <p>
-            Total Votes: @s.UserVotes.Count
-        </p>        
-        <p>
-            @s.Category.CategoryName
-        </p>        
-        <p>
-            @s.Description
-        </p>
-        @if (s.SuggestionStatus is not null)
+        @foreach (var s in rejected)
         {
+            <hr />
             <div>
-                @s.SuggestionStatus.StatusName
+                @s.Suggestion
             </div>
             <p>
-                @((MarkupString)s.OwnerNotes)
+                @s.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p>
+                Total Votes: @s.UserVotes.Count
+            </p>
+            <p>
+                @s.Category.CategoryName
+            </p>
+            <p>
+                @s.Description
+            </p>
+            @if (s.SuggestionStatus is not null)
+            {
+                <div>
+                    @s.SuggestionStatus.StatusName
+                </div>
+                <p>
+                    @((MarkupString)s.OwnerNotes)
+                </p>
+            }
         }
-    }
 
-</div>
+    </div>
 }
 
 @code {
@@ -177,7 +178,11 @@
     protected async override Task OnInitializedAsync()
     {
         //TODO - Replace with user lookup
+        //var authState = await authProvider.GetAuthenticationStateAsync();
+        //string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        //loggedInUser = await userData.GetUserFromAuthentication(objectId);
         loggedInUser = await userData.GetUserFromAuthentication("abc_123");
+
 
         var results = await suggestionData.GetUsersSuggestions(loggedInUser.Id);
 
